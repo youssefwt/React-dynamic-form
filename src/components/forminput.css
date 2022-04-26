@@ -1,0 +1,31 @@
+.form-input{
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+}
+
+input{
+    padding: 15px;
+    margin: 10px 0px;
+    border: 1px gray solid;
+    border-radius: 5px;
+}
+
+span{
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: red;
+    display: none;
+}
+
+/* input:invalid[wasfocused="true"]{
+    border-color: red;
+} */
+
+/* select the span that is after an invalid input */
+/* input:invalid[wasfocused="true"] ~ span{
+    display: block;
+} */
+
+
+input[isRequired="true"][invalid="true"] ~ span { display: block; }
