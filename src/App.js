@@ -8,16 +8,16 @@ function App() {
    1- values object, holding stats of inputs*/
   const [values, setValues] = useState({
     username: "",
+    fullname: "",
     email: "",
     date: "",
     password: "",
     confirmPassword: "",
   });
 
-  //2- and array of input objects, with every input data
+  //2- and array of input objects, with every input data, same as HTML attributes
   const inputs = [
     {
-      id: 1,
       name: "username",
       type: "text",
       placeholder: "Username",
@@ -31,7 +31,18 @@ function App() {
       },
     },
     {
-      id: 2,
+      name: "fullname",
+      type: "text",
+      placeholder: "fullname",
+      errorMessage: "any message you want",
+      label: "fullname",
+      required: "",
+      rules: {
+        required: "false",
+        pattern: "^[A-Za-z0-9\\s]{3,16}$",
+      },
+    },
+    {
       name: "email",
       type: "email",
       placeholder: "Email",
@@ -44,7 +55,6 @@ function App() {
       },
     },
     {
-      id: 3,
       name: "date",
       type: "date",
       placeholder: "Date",
@@ -53,13 +63,12 @@ function App() {
       required: "1",
       rules: {
         required: "true",
-        pattern: "^d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",
+        pattern: "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))",
       },
     },
     {
-      id: 4,
       name: "password",
-      type: "text",
+      type: "password",
       placeholder: "Password",
       errorMessage: "password should be 6-8 charachters",
       label: "Password",
@@ -70,9 +79,8 @@ function App() {
       },
     },
     {
-      id: 5,
       name: "confirmPassword",
-      type: "text",
+      type: "password",
       placeholder: "Confirm Password",
       errorMessage: " password must match",
       label: "Confirm Password",
@@ -97,27 +105,35 @@ function App() {
     const entriesKeyArray = Object.keys(entries);
     const entriesValueArray = Object.values(entries);
     const requiredEntries = [];
-    let check = true;
+    const requiredEntriesPattern = [];
+    let error = 0;
 
     entriesKeyArray.forEach((input, index) => {
-      if (inputs[index].rules.required === "true")
+      if (inputs[index].rules.required === "true") {
         requiredEntries.push(entriesValueArray[index]);
+        requiredEntriesPattern.push(inputs[index].rules.pattern);
+      } else {
+        return; //to skip the iteration
+      }
     });
 
     if (requiredEntries.every((value) => value)) {
-      console.log("required Entries ", requiredEntries);
+      console.log("required Entries: ", requiredEntries);
 
       requiredEntries.forEach((entry, index) => {
-        console.log(entry);
-        entry.match(inputs[index].rules.pattern)
-          ? (check = true)
-          : (check = false);
+        console.log("entry ", entry);
+        console.log("index ", index);
+        console.log("pattern ", requiredEntriesPattern[index]);
+        if (!entry.match(requiredEntriesPattern[index])) error++;
+
+        console.log("check: ", error);
       });
 
-      if (check) {
-        console.log("success");
+      if (!error) {
+        //send to API
+        alert("success");
       } else {
-        console.log("something is wrong");
+        alert("fail, please conform to the requirments");
       }
     }
   };
@@ -125,16 +141,16 @@ function App() {
   const setEntries = (e) => {
     /** "["e.target.name"]", computed property, to access property name, and assign the vlaue to it */
     setValues({ ...values, [e.target.name]: e.target.value });
-    console.log(e.target.name);
+    // console.log(e.target.name);
   };
 
   return (
     <div className="app">
       <form onSubmit={handleSubmit}>
         <h2>Register</h2>
-        {inputs.map((input) => (
+        {inputs.map((input, index) => (
           <FormInput
-            key={input.id}
+            key={index}
             /**
             name={input.name}
             placeholder={input.placeholder}

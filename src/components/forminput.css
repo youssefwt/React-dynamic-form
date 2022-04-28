@@ -18,6 +18,18 @@ span{
     display: none;
 }
 
+
+
+
+input[isRequired="true"][invalid="true"] ~ span { display: block; }
+
+
+
+
+
+
+
+
 /* input:invalid[wasfocused="true"]{
     border-color: red;
 } */
@@ -26,6 +38,3 @@ span{
 /* input:invalid[wasfocused="true"] ~ span{
     display: block;
 } */
-
-
-input[isRequired="true"][invalid="true"] ~ span { display: block; }

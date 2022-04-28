@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./forminput.css";
 
 const FormInput = (props) => {
-  const [invalid, setinvalid] = useState("false");
+  const [invalid, setinvalid] = useState("false"); //default is false
   const { rules, label, errorMessage, setEntries, id, ...inputProps } = props;
   const { required, pattern } = rules;
 
@@ -20,14 +20,11 @@ const FormInput = (props) => {
     <div className="form-input">
       <label>{label}</label>
       <input
-        // type="text"
-        // name={props.name}
-        // placeholder={props.placeholder}
-        {...inputProps}
+        {...inputProps} //using destructuring
         isrequired={required}
         onChange={(e) => {
           setEntries(e);
-          // verify(e);
+          verify(e); //optional
         }}
         onFocus={() =>
           inputProps.name === "confirmPassword" && setinvalid("true")
